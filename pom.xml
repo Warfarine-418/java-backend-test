@@ -13,6 +13,7 @@
         <maven.compiler.target>8</maven.compiler.target>
         <jupiter.version>5.7.0</jupiter.version>
         <surefire.version>2.22.0</surefire.version>
+        <lombok.version>1.18.20</lombok.version>
     </properties>
 
     <build>
@@ -61,6 +62,13 @@
             <version>4.3.3</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,26 +1,52 @@
 package com.geekbrains.restApi.Imgur;
 
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.core.Is.is;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ImgurApiTest {
+    ResponseSpecification responseSpecification = null;
+    RequestSpecification requestSpecification = null;
 
     @BeforeAll
     static void beforeAll() {
         RestAssured.baseURI = ImgurApiParams.API_URL + "/" + ImgurApiParams.API_VERSION;
+    }
 
+    @BeforeEach
+    void beforeTest() {
+        requestSpecification = new RequestSpecBuilder()
+                .addFormParam("title", "doggy")
+                .addFormParam("description", "auf auf")
+                .build();
+
+        responseSpecification = new ResponseSpecBuilder()
+                .expectBody("success", is(true))
+                .expectBody("status", is(200))
+                .expectStatusCode(200)
+                .build();
     }
 
     @DisplayName("Тест на получение базовой информации об аккаунте")
     @Test
     @Order(1)
     void testAccountBase() {
+
+        ResponseSpecification responseSpecification = new ResponseSpecBuilder()
+                .expectBody("success", is(true))
+                .expectBody("status", is(200))
+                .expectStatusCode(200)
+                .build();
+
         String url = "account/" + "tjg8f7g2780";
         given().when()
                 .auth()
@@ -28,9 +54,7 @@ public class ImgurApiTest {
                 .log()
                 .all()
                 .expect()
-                .statusCode(is(200))
-                .body("success", is(true))
-                .body("status", is(200))
+                .spec(responseSpecification)
                 .log()
                 .all()
                 .when()
@@ -51,8 +75,7 @@ public class ImgurApiTest {
                 .expect()
                 .log()
                 .all()
-                .statusCode(is(200))
-                .body("success", is(true))
+                .spec(responseSpecification)
                 .body("data.account_url", is("tjg8f7g2780"))
                 .when()
                 .post(url);
@@ -69,9 +92,7 @@ public class ImgurApiTest {
                 .log()
                 .all()
                 .expect()
-                .statusCode(is(200))
-                .body("success", is(true))
-                .body("status", is(200))
+                .spec(responseSpecification)
                 .log()
                 .all()
                 .when()
@@ -89,8 +110,7 @@ public class ImgurApiTest {
                 .header("Authorization", ImgurApiParams.CLIENT_ID)
                 .log()
                 .all()
-                .formParam("title", "doggy")
-                .formParam("description", "auf auf")
+                .spec(requestSpecification)
                 .expect()
                 .log()
                 .all()
@@ -113,14 +133,11 @@ public class ImgurApiTest {
                 .oauth2(ImgurApiParams.TOKEN)
                 .log()
                 .all()
-                .formParam("title", "doggy")
-                .formParam("description", "auf auf")
+                .spec(requestSpecification)
                 .expect()
                 .log()
                 .all()
-                .statusCode(is(200))
-                .body("success", is(true))
-                .body("data", is(true))
+                .spec(responseSpecification)
                 .when()
                 .post(url);
     }
