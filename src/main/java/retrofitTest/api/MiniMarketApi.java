@@ -12,7 +12,7 @@ public interface MiniMarketApi {
     Call<List<Product>> getProducts();
 
     @GET("api/v1/products/{id}")
-    Call<Product> getProduct(@Path("id") Long id);
+    Call<Product> getProduct(@Path("id") Integer id);
 
     @POST("api/v1/products")
     Call<Product> createProduct(@Body Product product);
@@ -21,5 +21,5 @@ public interface MiniMarketApi {
     Call<Product> modifyProducts(@Body Product product);
 
     @DELETE("api/v1/products/{id}")
-    Call<Void> deleteProduct(@Path("id") Long id);
+    Call<Void> deleteProduct(@Path("id") Integer id);
 }

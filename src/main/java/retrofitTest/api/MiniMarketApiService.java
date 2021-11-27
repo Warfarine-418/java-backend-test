@@ -26,7 +26,7 @@ public class MiniMarketApiService {
                 .body();
     }
 
-    public Product getProduct(long id) throws IOException {
+    public Product getProduct(Integer id) throws IOException {
         Response<Product> response = api.getProduct(id).execute();
         if (response.isSuccessful()) {
             return response.body();
@@ -35,7 +35,7 @@ public class MiniMarketApiService {
         }
     }
 
-    public Long createProduct(Product product) throws IOException {
+    public Integer createProduct(Product product) throws IOException {
         return api.createProduct(product).execute().body().getId();
     }
 
@@ -43,7 +43,7 @@ public class MiniMarketApiService {
         api.modifyProducts(product).execute();
     }
 
-    public void deleteProduct(long id) throws IOException {
+    public void deleteProduct(Integer id) throws IOException {
         api.deleteProduct(id).execute();
     }
 }

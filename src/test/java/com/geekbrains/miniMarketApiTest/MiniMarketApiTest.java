@@ -1,13 +1,17 @@
 package com.geekbrains.miniMarketApiTest;
 
-import org.apache.http.client.HttpResponseException;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.*;
-import retrofit2.HttpException;
 import retrofitTest.api.MiniMarketApiService;
 import retrofitTest.model.Product;
-
-import java.io.EOFException;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -15,17 +19,18 @@ import java.util.List;
 public class MiniMarketApiTest {
 
     private static MiniMarketApiService apiService;
+    private static Gson gson;
+    private static Integer id = 0;
 
     @BeforeAll
     static void beforeAll() {
         apiService = new MiniMarketApiService();
+        gson = new Gson();
     }
-
-    private static Long id;
 
     @DisplayName("Тест на добавление продукта")
     @Test
-    @Order(1)
+    @Order(2)
     void testCreateProduct() throws IOException {
         Product product = Product.builder()
                 .categoryTitle("Food")
@@ -33,63 +38,81 @@ public class MiniMarketApiTest {
                 .title("Orange")
                 .build();
         id = apiService.createProduct(product);
-        Assertions.assertEquals("Orange", product.getTitle());
-        Assertions.assertEquals("Food", product.getCategoryTitle());
-        System.out.println(id);
+        Product expected = apiService.getProduct(id);
+        Assertions.assertEquals(id, expected.getId());
     }
 
     @DisplayName("Тест на получение информации о продуктах")
     @Test
-    @Order(2)
-    void testGetProducts() throws IOException {
-        List<Product> expected = apiService.getProducts();
-        //TODO
+    @Order(1)
+    void testGetProducts() throws IOException, URISyntaxException {
+        Type type = new TypeToken<ArrayList<Product>>() {
+        }.getType();
+        String json = getJsonResources("testGetProducts/expected.json");
+        List<Product> expected = gson.fromJson(json, type);
+        List<Product> actually = apiService.getProducts();
+        Assertions.assertEquals(expected.size(), actually.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertProduct(expected.get(i), actually.get(i));
+        }
     }
 
-    @DisplayName("Тест на обновление информации о продукте")
-    @Test
-    @Order(3)
-    void testModifyProduct() throws IOException {
-        apiService.modifyProducts(Product.builder().build());
-        //TODO
+    String getJsonResources(String resource) throws IOException, URISyntaxException {
+        byte[] bytes = Files.readAllBytes(Paths.get(getClass().getResource(resource).toURI()));
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    @DisplayName("Тест на получение информации о продукте по Id")
+    void assertProduct(Product expected, Product actually) {
+        Assertions.assertEquals(expected.getId(), actually.getId());
+        Assertions.assertEquals(expected.getTitle(), actually.getTitle());
+        Assertions.assertEquals(expected.getPrice(), actually.getPrice());
+        Assertions.assertEquals(expected.getCategoryTitle(), actually.getCategoryTitle());
+    }
+//    @DisplayName("Тест на обновление информации о продукте")
+//    @Test
+//    @Order(3)
+//    void testModifyProduct() throws IOException {
+//        apiService.modifyProducts(Product.builder().build());
+//        //TODO
+//    }
+
+        @DisplayName("Тест на получение информации о продукте по Id")
     @Test
     @Order(4)
     void testGetProductById() throws IOException {
         Product product = apiService.getProduct(id);
-        Assertions.assertEquals(id, product.getId());
-        Assertions.assertEquals("Orange", product.getTitle());
-        Assertions.assertEquals("Food", product.getCategoryTitle());
+        assertProduct(apiService.getProduct(id),product);
+    }
+
+    @DisplayName("Тест на получение информации о продукте по несуществующиму Id")
+    @Test
+    @Order(5)
+    void testGetProductByIdProductNotExist() {
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            Product product = apiService.getProduct(1000);
+        });
     }
 
     @DisplayName("Тест на удаление продукта")
     @Test
-    @Order(5)
+    @Order(6)
     void testDeleteProduct() throws IOException {
-
-        Assertions.assertThrows(EOFException.class, () ->{
-            apiService.deleteProduct(id);
-        });
-
-        Assertions.assertThrows(RuntimeException.class, () ->{
-                apiService.getProduct(id);
+        apiService.deleteProduct(id);
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            apiService.getProduct(id);
         });
     }
 
 
     @DisplayName("Тест на удаление отстутствующего продукта")
     @Test
-    @Order(6)
+    @Order(7)
     void testDeleteNullProduct() throws IOException {
-        Assertions.assertThrows(EOFException.class, () ->{
-            apiService.deleteProduct(100);
-        });
-
-        Assertions.assertThrows(RuntimeException.class, () ->{
+        apiService.deleteProduct(100);
+        Assertions.assertThrows(RuntimeException.class, () -> {
             apiService.getProduct(100);
         });
     }
+
 
 }
