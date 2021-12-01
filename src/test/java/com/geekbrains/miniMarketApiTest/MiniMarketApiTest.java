@@ -28,7 +28,7 @@ public class MiniMarketApiTest {
         gson = new Gson();
     }
 
-    @DisplayName("Тест на добавление продукта")
+    @DisplayName("Product Addition Test")
     @Test
     @Order(2)
     void testCreateProduct() throws IOException {
@@ -42,7 +42,7 @@ public class MiniMarketApiTest {
         Assertions.assertEquals(id, expected.getId());
     }
 
-    @DisplayName("Тест на получение информации о продуктах")
+    @DisplayName("Test for obtaining information about products")
     @Test
     @Order(1)
     void testGetProducts() throws IOException, URISyntaxException {
@@ -76,7 +76,7 @@ public class MiniMarketApiTest {
 //        //TODO
 //    }
 
-        @DisplayName("Тест на получение информации о продукте по Id")
+        @DisplayName("Test for obtaining product information by Id")
     @Test
     @Order(4)
     void testGetProductById() throws IOException {
@@ -84,7 +84,7 @@ public class MiniMarketApiTest {
         assertProduct(apiService.getProduct(id),product);
     }
 
-    @DisplayName("Тест на получение информации о продукте по несуществующиму Id")
+    @DisplayName("Test for obtaining product information by non-existent Id")
     @Test
     @Order(5)
     void testGetProductByIdProductNotExist() {
@@ -93,7 +93,7 @@ public class MiniMarketApiTest {
         });
     }
 
-    @DisplayName("Тест на удаление продукта")
+    @DisplayName("Product Removal Test")
     @Test
     @Order(6)
     void testDeleteProduct() throws IOException {
@@ -104,7 +104,7 @@ public class MiniMarketApiTest {
     }
 
 
-    @DisplayName("Тест на удаление отстутствующего продукта")
+    @DisplayName("Test for removing a missing product")
     @Test
     @Order(7)
     void testDeleteNullProduct() throws IOException {

@@ -36,7 +36,7 @@ public class ImgurApiTest {
                 .build();
     }
 
-    @DisplayName("Тест на получение базовой информации об аккаунте")
+    @DisplayName("Test for getting basic account information")
     @Test
     @Order(1)
     void testAccountBase() {
@@ -61,7 +61,7 @@ public class ImgurApiTest {
                 .get(url);
     }
 
-    @DisplayName("Тест добавление картинки ")
+    @DisplayName("Test adding an image")
     @Test
     @Order(2)
     void testUploadImage() {
@@ -81,7 +81,7 @@ public class ImgurApiTest {
                 .post(url);
     }
 
-    @DisplayName("Тест получение информации о картинке")
+    @DisplayName("Test getting information about an image")
     @Test
     @Order(3)
     void testGetImageInfo() {
@@ -99,7 +99,7 @@ public class ImgurApiTest {
                 .get(url);
     }
 
-    @DisplayName("Тест обновление информации о картинке без авторизации")
+    @DisplayName("Test updating information about an image without authorization")
     @Test
     @Order(4)
     void testUpdateImageInfoUnAuth() {
@@ -121,9 +121,8 @@ public class ImgurApiTest {
                 .post(url);
     }
 
-    @DisplayName("Тест обновления информации о картинке с авторизацией")
+    @DisplayName("Test of updating information about an image with authorization")
     @Test
-    @Disabled
     @Order(5)
     void testUpdateImageInfoAuth() {
         String imageHash = "GB2RWQk";
@@ -143,7 +142,7 @@ public class ImgurApiTest {
                 .post(url);
     }
 
-    @DisplayName("Тест удаление картинки из избранного")
+    @DisplayName("Test deleting an image from favorites")
     @Test
     @Order(6)
     void testUnFavoriteImage() {
@@ -165,7 +164,7 @@ public class ImgurApiTest {
                 .post(url);
     }
 
-    @DisplayName("Тест добавление картинки в избранное")
+    @DisplayName("Test adding an image to favorites")
     @Test
     @Order(7)
     void testFavoriteImage() {
@@ -187,7 +186,7 @@ public class ImgurApiTest {
                 .post(url);
     }
 
-    @DisplayName("Тест удаление картинки без авторизации")
+    @DisplayName("Test deleting an image without authorization")
     @Test
     @Order(8)
     void testDeletionImageUnAuth() {
@@ -208,7 +207,7 @@ public class ImgurApiTest {
                 .post(url);
     }
 
-    @DisplayName("Тест удаление картинки с авторизацией")
+    @DisplayName("Test deleting an image with authorization")
     @Test
     @Order(9)
     void testDeletionImageAuth() {
