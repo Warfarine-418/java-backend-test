@@ -1,20 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
         PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
     <classPathEntry
-            location="C:/Users/Warfarin/.m2/repository/org/xerial/sqlite-jdbc/3.36.0.3/sqlite-jdbc-3.36.0.3.jar"/>
+            location="C:/Users/Warfarin/.m2/repository/com/h2database/h2/1.4.200/h2-1.4.200.jar"/>
 
     <context id="DB2Tables" targetRuntime="MyBatis3">
-        <jdbcConnection driverClass="org.sqlite.JDBC"
-                        connectionURL="jdbc:sqlite:C:/Users/Warfarin/Desktop/java-backend-test/miniMarket.db">
+        <jdbcConnection driverClass="org.h2.Driver"
+                        connectionURL="jdbc:h2:C:/Users/Warfarin/Desktop/java-backend-test/miniMarket"
+                        userId="sa"
+                        password="">
         </jdbcConnection>
-
-        <javaTypeResolver>
-            <property name="forceBigDecimals" value="false"/>
-        </javaTypeResolver>
 
         <javaModelGenerator targetPackage="db.model" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
@@ -29,13 +26,12 @@
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
+
         <table tableName="categories">
             <generatedKey column="id" sqlStatement="DB2" identity="true"/>
         </table>
         <table tableName="products">
             <generatedKey column="id" sqlStatement="DB2" identity="true"/>
         </table>
-
-
     </context>
 </generatorConfiguration>

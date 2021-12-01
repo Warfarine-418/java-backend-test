@@ -7,13 +7,17 @@
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
-                <property name="driver" value="org.sqlite.JDBC"/>
-                <property name="url" value="jdbc:sqlite:C:/Users/Warfarin/Desktop/java-backend-test/miniMarket.db"/>
+                <property name="driver" value="org.h2.Driver"/>
+                <property name="url" value="jdbc:h2:C:/Users/Warfarin/Desktop/java-backend-test/miniMarket"/>
+                <property name="username" value="sa"/>
+                <property name="password" value=""/>
             </dataSource>
         </environment>
     </environments>
+
     <mappers>
-        <mapper resource="C:\Users\Warfarin\Desktop\java-backend-test\src\main\java\db\mapper\xml\CategoriesMapper.xml"/>
-        <mapper resource="C:\Users\Warfarin\Desktop\java-backend-test\src\main\java\db\mapper\xml\ProductsMapper.xml"/>
+        <mapper resource="db/mapper/xml/CategoriesMapper.xml"/>
+        <mapper resource="db/mapper/xml/ProductsMapper.xml"/>
     </mappers>
 </configuration>
+
