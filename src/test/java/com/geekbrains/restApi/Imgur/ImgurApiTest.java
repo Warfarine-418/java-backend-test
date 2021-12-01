@@ -123,6 +123,7 @@ public class ImgurApiTest {
 
     @DisplayName("Тест обновления информации о картинке с авторизацией")
     @Test
+    @Disabled
     @Order(5)
     void testUpdateImageInfoAuth() {
         String imageHash = "GB2RWQk";
